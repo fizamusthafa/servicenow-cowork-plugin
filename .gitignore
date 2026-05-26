@@ -4,4 +4,7 @@ node_modules/
 sn-favicon.ico
 sn-logo.png
 .azure/
-sn-*.txt
+servicenowcopilotstudioconnection.md
+mcp-server/.env
+plugin/mcp-tools.md
+plugin/mcp-tools.txt
