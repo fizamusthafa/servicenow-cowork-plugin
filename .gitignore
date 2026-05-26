@@ -1,0 +1,7 @@
+node_modules/
+.env
+*.zip
+sn-favicon.ico
+sn-logo.png
+.azure/
+sn-*.txt

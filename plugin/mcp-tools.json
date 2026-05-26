@@ -1,0 +1,36 @@
+{
+  "tools": [
+    {
+      "name": "search_incidents",
+      "description": "Search ServiceNow incidents by status, priority, assignee, or keyword. Returns up to 20 results."
+    },
+    {
+      "name": "get_incident",
+      "description": "Get full details of a single ServiceNow incident by its number."
+    },
+    {
+      "name": "create_incident",
+      "description": "Create a new incident in ServiceNow."
+    },
+    {
+      "name": "update_incident",
+      "description": "Update fields on an existing ServiceNow incident."
+    },
+    {
+      "name": "resolve_incident",
+      "description": "Resolve a ServiceNow incident with close notes."
+    },
+    {
+      "name": "search_changes",
+      "description": "Search ServiceNow change requests by state, type, or assignment group."
+    },
+    {
+      "name": "get_change",
+      "description": "Get full details of a change request by its number."
+    },
+    {
+      "name": "create_change",
+      "description": "Create a new change request in ServiceNow."
+    }
+  ]
+}

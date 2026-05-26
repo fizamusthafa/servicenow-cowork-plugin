@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.28/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.28",
+  "version": "1.0.0",
+  "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+  "developer": {
+    "name": "Contoso IT",
+    "websiteUrl": "https://contoso.com",
+    "privacyUrl": "https://contoso.com/privacy",
+    "termsOfUseUrl": "https://contoso.com/terms"
+  },
+  "name": {
+    "short": "ServiceNow for Cowork",
+    "full": "ServiceNow Incident & Change Management for Copilot Cowork"
+  },
+  "description": {
+    "short": "Manage ServiceNow incidents and change requests from Cowork",
+    "full": "A Copilot Cowork plugin that connects to ServiceNow for IT service management. Create, query, update, and resolve incidents. Submit, approve, and track change requests. All through natural language in Cowork."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#81B5A1",
+  "agentSkills": [
+    { "folder": "./skills/servicenow-incidents" },
+    { "folder": "./skills/servicenow-changes" }
+  ],
+  "agentConnectors": [
+    {
+      "id": "servicenow-api",
+      "displayName": "ServiceNow Instance",
+      "description": "Connects to ServiceNow for incident and change management via the Table API",
+      "toolSource": {
+        "remoteMcpServer": {
+          "mcpServerUrl": "https://bm6w6x4v-3001.eun1.devtunnels.ms/mcp",
+          "mcpToolDescription": {
+            "file": "mcp-tools.json"
+          },
+          "authorization": {
+            "type": "None"
+          }
+        }
+      }
+    }
+  ]
+}
