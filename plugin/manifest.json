@@ -33,7 +33,7 @@
       "description": "Connects to ServiceNow for incident and change management via the Table API",
       "toolSource": {
         "remoteMcpServer": {
-          "mcpServerUrl": "https://YOUR-MCP-SERVER-URL/mcp",
+          "mcpServerUrl": "https://3wgc8s18-3001.euw.devtunnels.ms/mcp",
           "mcpToolDescription": {
             "file": "mcp-tools.json"
           },

@@ -1,6 +1,10 @@
 {
   "tools": [
     {
+      "name": "show_incident_dashboard",
+      "description": "Open an interactive ServiceNow incident dashboard widget showing incidents with priority, state, and assignee. Use when the user wants to see, browse, or get an overview of incidents."
+    },
+    {
       "name": "search_incidents",
       "description": "Search ServiceNow incidents by status, priority, assignee, or keyword. Returns up to 20 results."
     },
@@ -19,6 +23,10 @@
     {
       "name": "resolve_incident",
       "description": "Resolve a ServiceNow incident with close notes."
+    },
+    {
+      "name": "assign_incident",
+      "description": "Route an incident to the correct IT assignment group. Auto-routes from the incident category (Network, Hardware, Software, Database, Service Desk) when no group is given."
     },
     {
       "name": "search_changes",
