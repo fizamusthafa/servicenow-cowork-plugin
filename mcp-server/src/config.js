@@ -23,6 +23,8 @@ function loadConfig(env = process.env) {
     username: env.SERVICENOW_USERNAME,
     password: env.SERVICENOW_PASSWORD,
     port: Number(env.PORT) || 3001,
+    // Per client IP. Copilot Studio calls originate from a shared pool, so keep this generous.
+    rateLimitPerMinute: Number(env.RATE_LIMIT_PER_MINUTE) || 600,
   };
 }
 

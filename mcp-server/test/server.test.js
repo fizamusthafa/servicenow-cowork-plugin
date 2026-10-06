@@ -357,3 +357,18 @@ describe("helpers", () => {
     assert.equal(loadConfig({ SERVICENOW_INSTANCE: "https://x.service-now.com/" }).instance, "https://x.service-now.com");
   });
 });
+
+describe("rate limiting", () => {
+  test("returns 429 once the per-minute limit is exceeded", async () => {
+    const sn = fakeServiceNow();
+    const config = { ...loadConfig({ SERVICENOW_INSTANCE: INSTANCE, AUTH_MODE: "oauth" }), rateLimitPerMinute: 2 };
+    const ctx = await startServer(config, sn);
+    try {
+      assert.equal((await rpc(ctx.base, "tools/list", {}, TOKEN)).status, 200);
+      assert.equal((await rpc(ctx.base, "tools/list", {}, TOKEN)).status, 200);
+      assert.equal((await rpc(ctx.base, "tools/list", {}, TOKEN)).status, 429);
+    } finally {
+      ctx.server.close();
+    }
+  });
+});
