@@ -1,6 +1,9 @@
-# ServiceNow plugin for Copilot Cowork
+# ServiceNow plugin for Copilot Cowork and ITSM agent for Copilot Studio
 
-A working Copilot Cowork plugin that connects to a real ServiceNow instance. Cowork can search, create, update, and resolve incidents and change requests through natural language — with approval prompts before any write operation.
+One ServiceNow MCP server with two front ends:
+
+- **[ITSM Assistant for Copilot Studio](copilot-studio/README.md):** a full ITSM agent built on the **GitHub Copilot harness**. It covers incidents, problems, changes, catalog requests, knowledge, the CMDB, and approvals, using 9 skills. Users sign in with their own ServiceNow account (OAuth), the server is hosted on Azure Container Apps, and the agent is published to Microsoft 365 Copilot and Teams. **Start at [copilot-studio/README.md](copilot-studio/README.md).**
+- **Copilot Cowork plugin** (described below): Cowork can search, create, update, and resolve incidents and change requests through natural language, with approval prompts before any write operation.
 
 ![Cowork showing ServiceNow incidents in a table](https://img.shields.io/badge/Cowork-Frontier_Preview-blue) ![Node.js](https://img.shields.io/badge/Node.js-20+-green) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
@@ -25,7 +28,16 @@ Cowork calls the MCP server, which translates the request into ServiceNow Table 
 └─────────────┘   tools/list, tools/call └─────────────────┘  GET/POST/PATCH  └──────────────────┘
 ```
 
-The plugin package tells Cowork what the MCP server can do (via skills and tool descriptions). The MCP server handles the actual ServiceNow communication using Basic Auth against the Table API.
+The plugin package tells Cowork what the MCP server can do, through skills and tool descriptions. The MCP server handles the actual ServiceNow communication.
+
+The server supports two authentication modes, set with `AUTH_MODE` in `mcp-server/.env`:
+
+| `AUTH_MODE` | Credentials sent to ServiceNow | Use for |
+|---|---|---|
+| `basic` (default) | One service account (`SERVICENOW_USERNAME` / `SERVICENOW_PASSWORD`) | Local development, the Cowork demo |
+| `oauth` | The caller's own OAuth bearer token, passed through unchanged; requests without one get a 401 | The Copilot Studio agent, and any shared deployment |
+
+The server uses the official MCP SDK, over stateless Streamable HTTP at `POST /mcp`.
 
 ## Repository layout
 
@@ -43,11 +55,25 @@ The plugin package tells Cowork what the MCP server can do (via skills and tool 
 │       │       └── servicenow-priorities.md
 │       └── servicenow-changes/    # Change request workflows
 │           └── SKILL.md
-├── mcp-server/                    # MCP server (Node.js + Express)
+├── copilot-studio/                # ITSM Assistant for Copilot Studio (GitHub Copilot harness)
+│   ├── README.md                  # Setup: Azure → ServiceNow OAuth → agent → skills → M365 Copilot
+│   ├── agent/                     # Instructions + agent profile
+│   ├── skills/                    # 9 ITSM skills (SKILL.md + references)
+│   ├── scripts/                   # validate-skills.js, package-skills.sh
+│   └── tests/test-prompts.md      # End-to-end test script
+├── mcp-server/                    # MCP server (Node.js, official MCP SDK)
 │   ├── package.json
+│   ├── Dockerfile
 │   ├── .env.example
-│   └── src/
-│       └── server.js
+│   ├── src/
+│   │   ├── server.js              # Entry point
+│   │   ├── app.js                 # HTTP + auth (basic | oauth pass-through)
+│   │   ├── mcp.js                 # MCP server, argument validation
+│   │   ├── servicenow.js          # ServiceNow REST client + query sanitising
+│   │   └── tools/                 # incidents, changes, problems, requests, knowledge, cmdb, people, records
+│   └── test/                      # npm test
+├── infra/                         # Bicep for Azure Container Apps (used by azd)
+├── azure.yaml                     # azd project
 └── SETUP.md                       # Full walkthrough (dev instance → Cowork)
 ```
 
@@ -107,6 +133,20 @@ Go to https://m365.cloud.microsoft/chat → All agents → Cowork (Frontier). Th
 | `search_changes` | GET | Search change requests |
 | `get_change` | GET | Full details of a change request |
 | `create_change` | POST | Create a new change request |
+
+The Cowork plugin uses the tools above. The server also exposes the full ITSM set used by the Copilot Studio agent:
+- Problems, plus linking an incident to a problem
+- Catalog search and ordering, and requested items (RITMs)
+- Knowledge articles
+- CMDB configuration items
+- Users and groups
+- Work notes and record activity
+- Approvals
+- Change updates
+
+See [copilot-studio/README.md](copilot-studio/README.md#what-the-agent-can-do).
+
+Run the tests with `cd mcp-server && npm test`.
 
 ## ServiceNow developer instance
 
