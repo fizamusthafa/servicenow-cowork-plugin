@@ -321,6 +321,8 @@ describe("helpers", () => {
   test("q() removes separators and control characters", () => {
     assert.equal(q("a^b\nc"), "a b c");
     assert.equal(q("x".repeat(500)).length, 200);
+    assert.equal(q("JavaScript:gs.getUserID()"), "gs.getUserID()");
+    assert.equal(q("javajavascript:script:x"), "x");
   });
 
   test("assertNumber normalises and validates", () => {

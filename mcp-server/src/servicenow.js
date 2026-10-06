@@ -78,13 +78,19 @@ function createClient({ instance, authorization, fetchImpl = fetch }) {
 
 // ── Encoded-query safety ────────────────────────────────────────────
 // `^` separates conditions in an encoded query (and `^OR` / `^NQ` add new
-// clauses), so user-supplied values must never contain it.
+// clauses), so user-supplied values must never contain it. ServiceNow also
+// evaluates `javascript:` values as server-side script, so that prefix is
+// removed wherever it appears.
 function q(value) {
-  return String(value ?? "")
+  let v = String(value ?? "")
     .replace(/[\^\r\n\t]/g, " ")
-    .replace(/[\u0000-\u001f]/g, "")
-    .trim()
-    .slice(0, 200);
+    .replace(/[\u0000-\u001f]/g, "");
+  let prev;
+  do {
+    prev = v;
+    v = v.replace(/javascript\s*:/gi, "");
+  } while (v !== prev);
+  return v.trim().slice(0, 200);
 }
 
 const NUMBER_RE = /^[A-Z]{2,8}\d{4,12}$/i;
