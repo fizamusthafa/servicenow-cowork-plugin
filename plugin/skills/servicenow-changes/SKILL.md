@@ -33,7 +33,7 @@ Enables Cowork to manage ServiceNow change requests, including:
 ### Reviewing Changes
 1. Use the `search_changes` tool to find pending changes
 2. Present the change details including risk and impact assessment
-3. If user wants to approve, use the `approve_change` tool
+3. If user wants to approve or reject, use `list_my_approvals` and `respond_to_approval` (after explicit confirmation)
 
 ### Tracking Changes
 1. Use the `get_change` tool to retrieve change details

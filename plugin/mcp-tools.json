@@ -39,6 +39,14 @@
     {
       "name": "create_change",
       "description": "Create a new change request in ServiceNow."
+    },
+    {
+      "name": "list_my_approvals",
+      "description": "List approvals waiting on the signed-in user (change requests, requested items, etc.)."
+    },
+    {
+      "name": "respond_to_approval",
+      "description": "Approve or reject a pending approval assigned to the user for a record such as a CHG or RITM. Rejections require comments."
     }
   ]
 }
